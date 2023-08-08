@@ -1,6 +1,7 @@
 from planteles2 import *
 import random
 import random as rd
+from collections import Counter
 import os
 #En un futuro terminar la parte de eleccion de jugadores en formacion.
 presupuesto_equipos = {
@@ -235,12 +236,14 @@ def jugar_partidos(respuesta2, equipos20):
     respuesta2 = respuesta2.lower()
     salir_menu1 = False
     formacion_armada = False
-    tabla_posiciones = {equipo: {'Puntos': 0, 'GF': 0, 'GC': 0} for equipo in equipos}
+    tabla_posiciones = {equipo: {'Puntos': 0, 'GF': 0, 'GC': 0, 'Partidos Jugados': 0} for equipo in equipos}
     while not salir_menu1:
         print("-----Menu de partidos.-----")
         print("1_Jugar partido.")
         print("2_Armar formacion.")
-        print("3_Volver al menu principal.")
+        print("3_Mostrar goleadores.")
+        print("4_Mostrar tabla de posiciones.")
+        print("5_Volver al menu principal.")
         respuesta = int(input("--Ingrese opcion:"))
         if respuesta == 2 :
             print(f"Bienvenido a la formacion de {respuesta2.title()}.")
@@ -314,20 +317,74 @@ def jugar_partidos(respuesta2, equipos20):
             print("Valoracion final:",valoracion_final_equipo)
             formacion_armada = True
         elif respuesta == 1 :
-                    if formacion_armada:
-                                    print("¡Jugando el partido!")
-                                    fecha_actual = fechas.pop(0)
-                                    resultados_fecha = jugar_fecha(equipos, fecha_actual)
-                                    goleadores_partidos = []  
-                                    for partido in resultados_fecha:
-                                        goleadores_partidos.extend(partido.get('Goleadores', []))  
-
-                                    goleadores.extend(goleadores_partidos)  
-                                    formacion_armada = False
+            if formacion_armada:
+                print("¡Jugando el partido!")
+                fecha_actual = fechas.pop(0)
+                resultados_fecha = jugar_fecha(equipos, fecha_actual)
+                goleadores_partidos = []  
+                for partido in resultados_fecha:
+                     goleadores_partidos.extend(partido.get('Goleadores', []))  
+                goleadores.extend(goleadores_partidos)
+                for partido in resultados_fecha:
+                    equipo_local = partido['Equipo Local']
+                    equipo_visitante = partido['Equipo Visitante']
+                    goles_local = partido['Goles Local']
+                    goles_visitante = partido['Goles Visitante']
+                
+                    tabla_posiciones[equipo_local]['GF'] += goles_local
+                    tabla_posiciones[equipo_local]['GC'] += goles_visitante
+                    tabla_posiciones[equipo_visitante]['GF'] += goles_visitante
+                    tabla_posiciones[equipo_visitante]['GC'] += goles_local
+                        
+                    if goles_local > goles_visitante:
+                        tabla_posiciones[equipo_local]['Puntos'] += 3
+                    elif goles_local < goles_visitante:
+                        tabla_posiciones[equipo_visitante]['Puntos'] += 3
                     else:
-                        print("¡Primero debes armar la formación para poder jugar el partido!")
-                        salir_menu1 = True
+                        tabla_posiciones[equipo_local]['Puntos'] += 1
+                        tabla_posiciones[equipo_visitante]['Puntos'] += 1
+                            
+                    tabla_posiciones[equipo_local]['Partidos Jugados'] += 1
+                    tabla_posiciones[equipo_visitante]['Partidos Jugados'] += 1
+                tabla_ordenada = sorted(tabla_posiciones.items(), key=lambda x: (x[1]['Puntos'], x[1]['GF'], x[0]), reverse=True)
+                
+                print("Tabla de Posiciones:")
+                print("-" * 65)
+                print(f"{'Equipo':<20}{'Puntos':<10}{'GF':<10}{'GC':<10}{'Partidos Jugados':<15}")
+                print("-" * 65)
+                for equipo, datos in tabla_ordenada:
+                    puntos = datos['Puntos']
+                    goles_favor = datos['GF']
+                    goles_contra = datos['GC']
+                    partidos_jugados = datos['Partidos Jugados']
+                    print(f"{equipo:<20}{puntos:<10}{goles_favor:<10}{goles_contra:<10}{partidos_jugados:<15}")
+                print("-" * 65)
+                
+                input("Presiona Enter para continuar...")
+                clear_screen()
+                
+                if not fechas:
+                    campeon = max(tabla_ordenada, key=lambda x: (x[1]['Puntos'], x[1]['GF']))[0]
+                    print(f"¡Campeón de la liga: {campeon}!")
+                    tabla_posiciones = {equipo: {'Puntos': 0, 'GF': 0, 'GC': 0, 'Partidos Jugados': 0} for equipo in equipos}
+                    formacion_armada = False
+            else:
+                 print("¡Primero debes armar la formación para poder jugar el partido!")
+                 salir_menu1 = True
         elif respuesta == 3:
+            print("-----Goleadores-----")
+            counter_goleadores = Counter(goleadores)
+            for jugador, goles in counter_goleadores.most_common(10):
+                print(f"{jugador}: {goles} goles")
+        elif respuesta == 4:
+            print("-----Tabla de Posiciones-----")
+            print(f"Liga Profesional de Futbol Argentino")
+            print(f"Fechas Jugadas: {fecha_actual}/{len(fechas)}\n")
+            print(f"{'Equipo':<20}{'Puntos':<10}{'GF':<10}{'GC':<10}{'Partidos Jugados':<20}")
+            print("-" * 50)
+            for equipo, datos in tabla_posiciones.items():
+                print(f"{equipo:<20}{datos['Puntos']:<10}{datos['GF']:<10}{datos['GC']:<10}{datos['Partidos Jugados']:<20}")
+        elif respuesta == 5:
             return
         else:
             print("*****Valor incorrecto.Ingrese valor valido.*****")
@@ -564,11 +621,9 @@ while True:
                 print("3. Vender jugador")
                 print("4. Realizar entrenamiento")
                 print("5. Jugar siguiente partido")
-                print("6. Mostrar goleadores")
-                print("7. Mostrar tabla de posiciones")
-                print("8. Mostrar fixture")
-                print("9. Mostrar vitrina del club")
-                print("10. Volver al menú principal")
+                print("6. Mostrar fixture")
+                print("7. Mostrar vitrina del club")
+                print("8. Volver al menú principal")
                 respuesta3 = int(input("--Ingrese opción:"))
 
                 if respuesta3 == 1:
@@ -584,7 +639,7 @@ while True:
                         jugar_partidos(respuesta2,equipos20)
                     else:
                         print("Debes armar el fixture antes para eso, debes dirigerte a la opcion armar fixture.")
-                elif respuesta3 == 8:
+                elif respuesta3 == 6:
                     jugar_partido=True
                     for fecha, partidos in enumerate(fixture, start=1):
                         print(f"Fecha {fecha}:")
@@ -592,7 +647,7 @@ while True:
                             equipo_local, equipo_visitante = partido
                             print(f"{equipo_local} vs. {equipo_visitante}")
                         print()
-                elif respuesta3 == 10:
+                elif respuesta3 == 8:
                     break
                     
 
