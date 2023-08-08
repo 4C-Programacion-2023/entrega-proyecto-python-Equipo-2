@@ -1,9 +1,7 @@
 from planteles2 import *
-from funciones import *
 import random
 import random as rd
 import os
-import time
 #En un futuro terminar la parte de eleccion de jugadores en formacion.
 presupuesto_equipos = {
     "boca juniors": 23000000,
@@ -36,6 +34,58 @@ presupuesto_equipos = {
     "central córdoba": 9000000,
     "atletico tucuman": 1000000,
 }
+def mostrar_plantel(equipo_elegido, presupuesto_equipos):
+    clear_screen()
+    equipos2 = {
+        "boca juniors": boca_plantel,
+        "river plate": river_plantel,
+        "racing club": racing_club_plantel,
+        "independiente": independiente_plantel,
+        "vélez sarsfield": velez_plantel,
+        "san lorenzo": san_lorenzo_plantel,
+        "huracán": huracan_plantel,
+        "argentinos juniors": argentinos_juniors_plantel,
+        "central córdoba": central_cordoba_plantel,
+        "belgrano": belgrano_plantel,
+        "platense": platense_plantel,
+        "barracas central": barracas_central_plantel,
+        "godoy cruz": godoy_cruz_plantel,
+        "banfield": banfield_plantel,
+        "gimnasia": gimnasia_plantel,
+        "atlético tucumán": atletico_tucuman_plantel,
+        "sarmiento": sarmiento_plantel,
+        "tigre": tigre_plantel,
+        "colón": colon_plantel,
+        "lanús": lanus_plantel,
+        "talleres": talleres_plantel,
+        "arsenal": arsenal_plantel,
+        "unión": union_plantel,
+        "newells": newells_plantel,
+        "rosario central": rosario_central_plantel,
+        "instituto": instituto_plantel,
+        "defensa y justicia": defensa_y_justicia_plantel,
+        "estudiantes": estudiantes_plantel,
+    }
+
+    equipo_elegido = equipo_elegido.lower()
+
+    if equipo_elegido not in equipos2:
+        print("El equipo elegido no se encuentra en la lista.")
+        return
+
+    plantel = equipos2[equipo_elegido]
+
+    print(f"Plantel de {equipo_elegido.capitalize()}:")
+    for jugador, caracteristicas in plantel.items():
+        print(f"{jugador.capitalize()}")
+        for caracteristica, valor in caracteristicas.items():
+            print(f"{caracteristica.capitalize()}: {valor}")
+        print("-" * 10)  # Línea de puntos entre jugadores
+
+    if equipo_elegido in presupuesto_equipos:
+        print(f"Presupuesto del equipo {equipo_elegido.capitalize()}: ${presupuesto_equipos[equipo_elegido]}")
+    else:
+        print("El equipo seleccionado no tiene un presupuesto definido.")
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 equipos20 = {
@@ -75,6 +125,7 @@ equipos = ["boca juniors", "river plate", "racing club", "independiente", "véle
            "arsenal", "unión", "newells", "rosario central", "instituto", "defensa y justicia",
            "estudiantes"]
 def armar_fixture(equipos):
+    clear_screen()
     fixture = []
     equipos_copy = equipos.copy()
     
@@ -98,6 +149,7 @@ def armar_fixture(equipos):
         equipos_copy = [equipos_copy[0]] + [equipos_copy[-1]] + equipos_copy[1:-1]
     return fixture
 def jugar_fecha(equipo_usuario, fecha):
+    clear_screen()
     print("Resultados de la fecha:")
     resultados_fecha = []
     for partido in fecha:
@@ -113,57 +165,75 @@ def jugar_fecha(equipo_usuario, fecha):
         resultados_fecha.append(resultado)
         print(f"{equipo_local.title()} vs. {equipo_visitante.title()}: {goles_local}-{goles_visitante}")
     return resultados_fecha
+def calcular_valoracion_equipo(nombre_equipo, equipos20):
+    equipo = equipos20.get(nombre_equipo.lower())
+    
+    if equipo is None:
+        return None
+    
+    valoracion_total = 0
+    for jugador, info in equipo.items():
+        valoracion_jugador = info.get("Valoración", 0)
+        valoracion_total += valoracion_jugador
+    
+    return valoracion_total
+def simular_partido(equipo_local, equipo_visitante, equipos20):
+    valoracion_local = calcular_valoracion_equipo(equipo_local, equipos20)
+    valoracion_visitante = calcular_valoracion_equipo(equipo_visitante, equipos20)
+        
+    max_goles_local = 3  # Valoración menor a 40
+    if valoracion_local > 40:
+        max_goles_local = 4
+    if valoracion_local > 60:
+        max_goles_local = 6
+    if valoracion_local > 100:
+        max_goles_local = 8
+        
+    max_goles_visitante = 3  # Valoración menor a 40
+    if valoracion_visitante > 40:
+        max_goles_visitante = 4
+    if valoracion_visitante > 60:
+        max_goles_visitante = 6
+    if valoracion_visitante > 100:
+        max_goles_visitante = 8
+    
+    goles_local = random.randint(0, max_goles_local)
+    goles_visitante = random.randint(0, max_goles_visitante)
+    
+    jugadores_local = list(equipos20[equipo_local].keys())
+    jugadores_visitante = list(equipos20[equipo_visitante].keys())
+    
+    goleadores = []
 
+    for _ in range(goles_local):
+        jugador_gol = random.choice(jugadores_local)
+        goleadores.append(jugador_gol)
 
-def simular_partido(equipo_local, equipo_visitante):
-
-    goles_local = random.randint(0, 3)
-    goles_visitante = random.randint(0, 3)
+    for _ in range(goles_visitante):
+        jugador_gol = random.choice(jugadores_visitante)
+        goleadores.append(jugador_gol)
     
     resultado = {
+        'Equipo Local': equipo_local,
         'Goles Local': goles_local,
-        'Goles Visitante': goles_visitante
+        'Equipo Visitante': equipo_visitante,
+        'Goles Visitante': goles_visitante,
+        'Goleadores': goleadores  
     }
+    
     return resultado
 fixture = armar_fixture(equipos)
 fechas = fixture
 fecha_actual = 0
 tabla_posiciones = {equipo: {'Puntos': 0, 'GF': 0, 'GC': 0} for equipo in equipos}
-def actualizar_tabla(resultados_fecha, tabla_posiciones):
-    for resultado in resultados_fecha:
-        equipo_local = resultado['Equipo Local']
-        equipo_visitante = resultado['Equipo Visitante']
-        goles_local = resultado['Goles Local']
-        goles_visitante = resultado['Goles Visitante']
-        
-        tabla_posiciones[equipo_local]['GF'] += goles_local
-        tabla_posiciones[equipo_local]['GC'] += goles_visitante
-        tabla_posiciones[equipo_visitante]['GF'] += goles_visitante
-        tabla_posiciones[equipo_visitante]['GC'] += goles_local
-        
-        if goles_local > goles_visitante:
-            tabla_posiciones[equipo_local]['Puntos'] += 3
-        elif goles_local < goles_visitante:
-            tabla_posiciones[equipo_visitante]['Puntos'] += 3
-        else:
-            tabla_posiciones[equipo_local]['Puntos'] += 1
-            tabla_posiciones[equipo_visitante]['Puntos'] += 1
-    
-    return tabla_posiciones
+resultados_fecha = []
+goleadores = []
 
-def mostrar_tabla_posiciones(tabla_posiciones):
-    print("Equipo               Puntos     Goles a favor Goles en contra")
-    for equipo, datos in tabla_posiciones.items():
-        nombre_equipo = equipo.title()
-        puntos = datos['Puntos']
-        goles_favor = datos['GF']
-        goles_contra = datos['GC']
-        print(f"{nombre_equipo:<20} {puntos:<11} {goles_favor:<13} {goles_contra:<15}")
-
-def jugar_partidos(respuesta2,equipos20):
+def jugar_partidos(respuesta2, equipos20):
+    clear_screen()
     global fecha_actual 
     respuesta2 = respuesta2.lower()
-    salir_menu1=False
+    salir_menu1 = False
     formacion_armada = False
     tabla_posiciones = {equipo: {'Puntos': 0, 'GF': 0, 'GC': 0} for equipo in equipos}
     while not salir_menu1:
@@ -171,7 +241,7 @@ def jugar_partidos(respuesta2,equipos20):
         print("1_Jugar partido.")
         print("2_Armar formacion.")
         print("3_Volver al menu principal.")
-        respuesta=int(input("--Ingrese opcion:"))
+        respuesta = int(input("--Ingrese opcion:"))
         if respuesta == 2 :
             print(f"Bienvenido a la formacion de {respuesta2.title()}.")
             equipo_formacion=equipos20[respuesta2]
@@ -244,21 +314,27 @@ def jugar_partidos(respuesta2,equipos20):
             print("Valoracion final:",valoracion_final_equipo)
             formacion_armada = True
         elif respuesta == 1 :
-            if formacion_armada:
-                print("¡Jugando el partido!")
-                fecha_actual = fechas.pop(0)
-                resultados_fecha = jugar_fecha(equipos, fecha_actual)
-                tabla_posiciones = actualizar_tabla(resultados_fecha, tabla_posiciones)
-                formacion_armada = False
-            else:
-                print("¡Primero debes armar la formación para poder jugar el partido!")
-                salir_menu1 = True
+                    if formacion_armada:
+                                    print("¡Jugando el partido!")
+                                    fecha_actual = fechas.pop(0)
+                                    resultados_fecha = jugar_fecha(equipos, fecha_actual)
+                                    goleadores_partidos = []  
+                                    for partido in resultados_fecha:
+                                        goleadores_partidos.extend(partido.get('Goleadores', []))  
+
+                                    goleadores.extend(goleadores_partidos)  
+                                    formacion_armada = False
+                    else:
+                        print("¡Primero debes armar la formación para poder jugar el partido!")
+                        salir_menu1 = True
         elif respuesta == 3:
             return
         else:
             print("*****Valor incorrecto.Ingrese valor valido.*****")
+
                 
 def comprar_jugador(respuesta2, presupuesto_equipos, equipos20):
+    clear_screen()
     while True:
         print("---Menu de transferencia de", respuesta2.title())
         print("1. Mostrar presupuesto")
@@ -343,7 +419,7 @@ def comprar_jugador(respuesta2, presupuesto_equipos, equipos20):
         else:
             print("*****Opción incorrecta. Ingrese una opción válida.*****")
 def vender_jugadores(respuesta2, presupuesto_equipos, equipos20):
-
+    clear_screen()
     mostrar_plantel(respuesta2.lower(), presupuesto_equipos)
     plantel = equipos20[respuesta2.lower()]
     equipo_elegido = respuesta2.lower()
@@ -396,6 +472,7 @@ def vender_jugadores(respuesta2, presupuesto_equipos, equipos20):
         print("No se puede vender jugadores. El plantel no tiene más de 11 jugadores o no cumple con la cantidad adecuada en cada posición.")
         return
 def menu_entrenamiento(respuesta2, entrenado):
+    clear_screen()
     salir_menu1 = False
 
     while not salir_menu1:
@@ -496,25 +573,17 @@ while True:
 
                 if respuesta3 == 1:
                     mostrar_plantel(respuesta2.lower(), presupuesto_equipos)
-                    clear_screen()
                 elif respuesta3 == 2:
                     comprar_jugador(respuesta2, presupuesto_equipos, equipos20)
-                    clear_screen()
                 elif respuesta3 == 3:
                     vender_jugadores(respuesta2, presupuesto_equipos, equipos20)
-                    clear_screen()
                 elif respuesta3 == 4:
                     entrenado = menu_entrenamiento(equipos20[respuesta2], entrenado)
-                    clear_screen()
                 elif respuesta3 == 5:
                     if jugar_partido == True:     
                         jugar_partidos(respuesta2,equipos20)
                     else:
                         print("Debes armar el fixture antes para eso, debes dirigerte a la opcion armar fixture.")
-                    clear_screen()
-                elif respuesta3 == 7 :
-                    mostrar_tabla_posiciones(tabla_posiciones)
-                    clear_screen()
                 elif respuesta3 == 8:
                     jugar_partido=True
                     for fecha, partidos in enumerate(fixture, start=1):
@@ -523,9 +592,7 @@ while True:
                             equipo_local, equipo_visitante = partido
                             print(f"{equipo_local} vs. {equipo_visitante}")
                         print()
-                    clear_screen()
                 elif respuesta3 == 10:
-                    clear_screen()
                     break
                     
 
