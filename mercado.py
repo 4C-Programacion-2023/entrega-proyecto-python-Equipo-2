@@ -125,14 +125,19 @@ def simular_partido(equipo_local, equipo_visitante):
 fixture = armar_fixture(equipos)
 fechas = fixture
 fecha_actual = 0
-tabla_posiciones = {equipo: {"Puntos": 0, "Goles a favor": 0, "Goles en contra": 0} for equipo in equipos} 
+tabla_posiciones = {equipo: {'Puntos': 0, 'GF': 0, 'GC': 0} for equipo in equipos}
 def actualizar_tabla(resultados_fecha, tabla_posiciones):
     for resultado in resultados_fecha:
         equipo_local = resultado['Equipo Local']
         equipo_visitante = resultado['Equipo Visitante']
         goles_local = resultado['Goles Local']
         goles_visitante = resultado['Goles Visitante']
-
+        
+        tabla_posiciones[equipo_local]['GF'] += goles_local
+        tabla_posiciones[equipo_local]['GC'] += goles_visitante
+        tabla_posiciones[equipo_visitante]['GF'] += goles_visitante
+        tabla_posiciones[equipo_visitante]['GC'] += goles_local
+        
         if goles_local > goles_visitante:
             tabla_posiciones[equipo_local]['Puntos'] += 3
         elif goles_local < goles_visitante:
@@ -140,22 +145,18 @@ def actualizar_tabla(resultados_fecha, tabla_posiciones):
         else:
             tabla_posiciones[equipo_local]['Puntos'] += 1
             tabla_posiciones[equipo_visitante]['Puntos'] += 1
-
-        tabla_posiciones[equipo_local]['GF'] += goles_local
-        tabla_posiciones[equipo_local]['GC'] += goles_visitante
-        tabla_posiciones[equipo_visitante]['GF'] += goles_visitante
-        tabla_posiciones[equipo_visitante]['GC'] += goles_local
-
+    
     return tabla_posiciones
 
-def mostrar_tabla_posiciones():
-    print("Tabla de Posiciones:")
-    print("{:<20} {:<10} {:<10} {:<10}".format("Equipo", "Puntos", "Goles a favor", "Goles en contra"))
+def mostrar_tabla_posiciones(tabla_posiciones):
+    print("Equipo               Puntos     Goles a favor Goles en contra")
     for equipo, datos in tabla_posiciones.items():
-        puntos = datos["Puntos"]
-        goles_a_favor = datos["Goles a favor"]
-        goles_en_contra = datos["Goles en contra"]
-        print("{:<20} {:<10} {:<10} {:<10}".format(equipo.title(), puntos, goles_a_favor, goles_en_contra))
+        nombre_equipo = equipo.title()
+        puntos = datos['Puntos']
+        goles_favor = datos['GF']
+        goles_contra = datos['GC']
+        print(f"{nombre_equipo:<20} {puntos:<11} {goles_favor:<13} {goles_contra:<15}")
+
 def jugar_partidos(respuesta2,equipos20):
     global fecha_actual 
     respuesta2 = respuesta2.lower()
@@ -249,8 +250,11 @@ def jugar_partidos(respuesta2,equipos20):
             else:
                 print("¡Primero debes armar la formación para poder jugar el partido!")
                 salir_menu1 = True
+        elif respuesta == 3:
+            return
         else:
             print("*****Valor incorrecto.Ingrese valor valido.*****")
+                
 def comprar_jugador(respuesta2, presupuesto_equipos, equipos20):
     while True:
         print("---Menu de transferencia de", respuesta2.title())
@@ -501,7 +505,7 @@ while True:
                     else:
                         print("Debes armar el fixture antes para eso, debes dirigerte a la opcion armar fixture.")
                 elif respuesta3 == 7 :
-                    mostrar_tabla_posiciones()
+                    mostrar_tabla_posiciones(tabla_posiciones)
                 elif respuesta3 == 8:
                     jugar_partido=True
                     for fecha, partidos in enumerate(fixture, start=1):
