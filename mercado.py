@@ -2,6 +2,8 @@ from planteles2 import *
 from funciones import *
 import random
 import random as rd
+import os
+import time
 #En un futuro terminar la parte de eleccion de jugadores en formacion.
 presupuesto_equipos = {
     "boca juniors": 23000000,
@@ -34,7 +36,8 @@ presupuesto_equipos = {
     "central córdoba": 9000000,
     "atletico tucuman": 1000000,
 }
-
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 equipos20 = {
     "boca juniors": boca_plantel,
     "river plate": river_plantel,
@@ -493,19 +496,25 @@ while True:
 
                 if respuesta3 == 1:
                     mostrar_plantel(respuesta2.lower(), presupuesto_equipos)
+                    clear_screen()
                 elif respuesta3 == 2:
                     comprar_jugador(respuesta2, presupuesto_equipos, equipos20)
+                    clear_screen()
                 elif respuesta3 == 3:
                     vender_jugadores(respuesta2, presupuesto_equipos, equipos20)
+                    clear_screen()
                 elif respuesta3 == 4:
                     entrenado = menu_entrenamiento(equipos20[respuesta2], entrenado)
+                    clear_screen()
                 elif respuesta3 == 5:
                     if jugar_partido == True:     
                         jugar_partidos(respuesta2,equipos20)
                     else:
                         print("Debes armar el fixture antes para eso, debes dirigerte a la opcion armar fixture.")
+                    clear_screen()
                 elif respuesta3 == 7 :
                     mostrar_tabla_posiciones(tabla_posiciones)
+                    clear_screen()
                 elif respuesta3 == 8:
                     jugar_partido=True
                     for fecha, partidos in enumerate(fixture, start=1):
@@ -514,8 +523,11 @@ while True:
                             equipo_local, equipo_visitante = partido
                             print(f"{equipo_local} vs. {equipo_visitante}")
                         print()
+                    clear_screen()
                 elif respuesta3 == 10:
+                    clear_screen()
                     break
+                    
 
                 else:
                     print("*****Valor incorrecto. Ingrese un valor correcto.*****")
