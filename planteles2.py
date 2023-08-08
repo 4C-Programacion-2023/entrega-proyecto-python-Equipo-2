@@ -2,17 +2,17 @@ boca_plantel = {
     "Sergio Romero": {"Edad": 35, "Posición": "Portero", "Valor de Mercado": 15000000, "Valoración": 8},
     "Leandro Brey": {"Edad": 20, "Posición": "Portero", "Valor de Mercado": 6000000, "Valoración": 7},
     "Marcelo Weigandt": {"Edad": 27, "Posición": "Defensor", "Valor de Mercado": 7000000, "Valoración": 9},
-    "Facundo Roncaglia": {"Edad": 37, "Posición": "Defensor", "Valor de Mercado": 2000000, "Valoración": 9},
+    "Nicolas Valentini": {"Edad": 21, "Posición": "Defensor", "Valor de Mercado": 3000000, "Valoración": 8},
     "Nicolás Figal": {"Edad": 29, "Posición": "Defensor", "Valor de Mercado": 9000000, "Valoración": 7},
     "Frank Fabra": {"Edad": 33, "Posición": "Defensor", "Valor de Mercado": 7000000, "Valoración": 9},
     "Luis Advíncula": {"Edad": 28, "Posición": "Defensor", "Valor de Mercado": 12000000, "Valoración": 9},
     "Pol Fernández": {"Edad": 31, "Posición": "Volante", "Valor de Mercado": 9000000, "Valoración": 8},
-    "Martín Payero": {"Edad": 26, "Posición": "Volante", "Valor de Mercado": 7000000, "Valoración": 7},
+    "Alan Varela": {"Edad": 24, "Posición": "Volante", "Valor de Mercado": 9000000, "Valoración": 8},
     "Juan Ramírez": {"Edad": 28, "Posición": "Volante", "Valor de Mercado": 5000000, "Valoración": 8},
     "Cristian Medina": {"Edad": 22, "Posición": "Volante", "Valor de Mercado": 9000000, "Valoración": 9},
     "Miguel Merentiel": {"Edad": 26, "Posición": "Delantero", "Valor de Mercado": 7000000, "Valoración": 8},
-    "Darío Benedetto": {"Edad": 34, "Posición": "Delantero", "Valor de Mercado": 12000000, "Valoración": 8},
-    "Sebastián Villa": {"Edad": 29, "Posición": "Delantero", "Valor de Mercado": 14000000, "Valoración": 9},
+    "Edinson Cavani": {"Edad": 34, "Posición": "Delantero", "Valor de Mercado": 13000000, "Valoración": 10},
+    "Luca Langoni": {"Edad": 21, "Posición": "Delantero", "Valor de Mercado": 8000000, "Valoración": 9},
     "Ezequiel Zeballos": {"Edad": 22, "Posición": "Delantero", "Valor de Mercado": 7000000, "Valoración": 8}
 }
 river_plantel = {
