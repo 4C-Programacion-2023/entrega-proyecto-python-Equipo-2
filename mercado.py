@@ -155,15 +155,12 @@ def jugar_fecha(equipo_usuario, fecha):
     resultados_fecha = []
     for partido in fecha:
         equipo_local, equipo_visitante = partido
-        goles_local = random.randint(0, 5)
-        goles_visitante = random.randint(0, 5)
-        resultado = {
-            'Equipo Local': equipo_local,
-            'Goles Local': goles_local,
-            'Equipo Visitante': equipo_visitante,
-            'Goles Visitante': goles_visitante
-        }
-        resultados_fecha.append(resultado)
+        resultado_partido = simular_partido(equipo_local, equipo_visitante, equipos20)
+        resultados_fecha.append(resultado_partido)
+        
+        goles_local = resultado_partido['Goles Local']
+        goles_visitante = resultado_partido['Goles Visitante']
+        
         print(f"{equipo_local.title()} vs. {equipo_visitante.title()}: {goles_local}-{goles_visitante}")
     return resultados_fecha
 def calcular_valoracion_equipo(nombre_equipo, equipos20):
@@ -179,24 +176,27 @@ def calcular_valoracion_equipo(nombre_equipo, equipos20):
     
     return valoracion_total
 def simular_partido(equipo_local, equipo_visitante, equipos20):
-    valoracion_local = calcular_valoracion_equipo(equipo_local, equipos20)
-    valoracion_visitante = calcular_valoracion_equipo(equipo_visitante, equipos20)
-        
-    max_goles_local = 3  # Valoración menor a 40
-    if valoracion_local > 40:
-        max_goles_local = 4
-    if valoracion_local > 60:
-        max_goles_local = 6
-    if valoracion_local > 100:
+    valoracion_local = calcular_valoracion_equipo(nombre_equipo=equipo_local, equipos20=equipos20)
+    valoracion_visitante = calcular_valoracion_equipo(nombre_equipo=equipo_visitante, equipos20=equipos20)
+    
+    # Ajustar máximos de goles según valoraciones
+    if valoracion_local > 130:
         max_goles_local = 8
-        
-    max_goles_visitante = 3  # Valoración menor a 40
-    if valoracion_visitante > 40:
-        max_goles_visitante = 4
-    if valoracion_visitante > 60:
-        max_goles_visitante = 6
-    if valoracion_visitante > 100:
+    elif valoracion_local > 90:
+        max_goles_local = 6
+    elif valoracion_local > 50:
+        max_goles_local = 5
+    else:
+        max_goles_local = 3
+    
+    if valoracion_visitante > 130:
         max_goles_visitante = 8
+    elif valoracion_visitante > 90:
+        max_goles_visitante = 6
+    elif valoracion_visitante > 50:
+        max_goles_visitante = 5
+    else:
+        max_goles_visitante = 3
     
     goles_local = random.randint(0, max_goles_local)
     goles_visitante = random.randint(0, max_goles_visitante)
@@ -382,7 +382,7 @@ def jugar_partidos(respuesta2, equipos20):
             print(f"Fechas Jugadas: {fecha_actual}/{len(fechas)}\n")
             print(f"{'Equipo':<20}{'Puntos':<10}{'GF':<10}{'GC':<10}{'Partidos Jugados':<20}")
             print("-" * 50)
-            for equipo, datos in tabla_posiciones.items():
+            for equipo, datos in tabla_ordenada.items():
                 print(f"{equipo:<20}{datos['Puntos']:<10}{datos['GF']:<10}{datos['GC']:<10}{datos['Partidos Jugados']:<20}")
         elif respuesta == 5:
             return
