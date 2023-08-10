@@ -3,6 +3,7 @@ import random
 import random as rd
 from collections import Counter
 import os
+from vitrina import *
 #En un futuro terminar la parte de eleccion de jugadores en formacion.
 presupuesto_equipos = {
     "boca juniors": 23000000,
@@ -180,21 +181,29 @@ def simular_partido(equipo_local, equipo_visitante, equipos20):
     valoracion_visitante = calcular_valoracion_equipo(nombre_equipo=equipo_visitante, equipos20=equipos20)
     
     # Ajustar máximos de goles según valoraciones
-    if valoracion_local > 130:
+    if valoracion_local > 140:
         max_goles_local = 8
-    elif valoracion_local > 90:
+    elif valoracion_local > 130:
+        max_goles_local = 7
+    elif valoracion_local > 120:
         max_goles_local = 6
-    elif valoracion_local > 50:
+    elif valoracion_local > 100:
         max_goles_local = 5
+    elif valoracion_local > 90:
+        max_goles_local = 4
     else:
         max_goles_local = 3
     
-    if valoracion_visitante > 130:
+    if valoracion_visitante > 140:
         max_goles_visitante = 8
-    elif valoracion_visitante > 90:
+    elif valoracion_visitante > 130:
+        max_goles_visitante = 7
+    elif valoracion_visitante > 120:
         max_goles_visitante = 6
-    elif valoracion_visitante > 50:
+    elif valoracion_visitante > 100:
         max_goles_visitante = 5
+    elif valoracion_visitante > 90:
+        max_goles_visitante = 4
     else:
         max_goles_visitante = 3
     
@@ -397,7 +406,8 @@ def comprar_jugador(respuesta2, presupuesto_equipos, equipos20):
         print("1. Mostrar presupuesto")
         print("2. Mostrar jugadores")
         print("3. Comprar jugador")
-        print("4. Volver al menú principal")
+        print("4. Informacion general")
+        print("5. Volver al menú principal")
 
         respuesta4 = int(input("--Ingrese opción:"))
 
@@ -469,8 +479,15 @@ def comprar_jugador(respuesta2, presupuesto_equipos, equipos20):
                             print("*****Jugador no existente en ese plantel. Ingrese un jugador válido.*****")
                 else:
                     print("*****Equipo inexistente. Ingrese un equipo válido.*****")
-
         elif respuesta4 == 4:
+            print("¡Bienvenido al menú de compra de jugadores!")
+            print("En esta sección, podrás adquirir jugadores de otros equipos para reforzar tu plantilla.")
+            print("Recuerda que solo puedes comprar un jugador si tienes suficiente presupuesto.")
+            print("Además, ten en cuenta que el precio de un jugador está relacionado con su valor de mercado.")
+            print("Si el precio supera tu presupuesto, no podrás realizar la compra.")
+            print("¡Buena suerte en tus decisiones de compra!")
+            print()
+        elif respuesta4 == 5:
             return
 
         else:
@@ -535,7 +552,8 @@ def menu_entrenamiento(respuesta2, entrenado):
     while not salir_menu1:
         print("Bienvenido al Menú de Entrenamiento.")
         print("1. Entrenar Jugadores")
-        print("2. Salir al Menú Principal")
+        print("2. Informacion general")
+        print("3.Salir al menú principal")
         entrenamiento = int(input("Seleccione una opción: "))
 
         if entrenamiento == 1:
@@ -548,7 +566,7 @@ def menu_entrenamiento(respuesta2, entrenado):
                 for jugador, atributos in respuesta2.items():
                     if atributos["Edad"] < 30:
                         jugadores_entrenar.add(jugador)
-                        print(jugador)  # Mostrar jugadores disponibles para entrenar
+                        print(jugador)  
                         print("Edad:", atributos["Edad"])
                         print("Posición:", atributos["Posición"])
                         print("Valoración:", atributos["Valoración"])
@@ -557,7 +575,7 @@ def menu_entrenamiento(respuesta2, entrenado):
                 if not jugadores_entrenar:
                     print("No hay jugadores disponibles para entrenar.")
                 else:
-                    num_entrenar = min(4, len(jugadores_entrenar))  # Máximo 4 jugadores a entrenar
+                    num_entrenar = min(4, len(jugadores_entrenar))  
 
                     jugadores_a_entrenar = set()
 
@@ -574,13 +592,13 @@ def menu_entrenamiento(respuesta2, entrenado):
                         valoracion_jugador = respuesta2[jugador]["Valoración"]
 
                         if edad_jugador <= 22:
-                            valoracion_jugador += 0.20
-                        elif edad_jugador <= 26:
                             valoracion_jugador += 0.15
-                        elif edad_jugador < 30:
+                        elif edad_jugador <= 26:
                             valoracion_jugador += 0.10
+                        elif edad_jugador < 30:
+                            valoracion_jugador += 0.5
 
-                        respuesta2[jugador]["Valoración"] = min(10, valoracion_jugador)  # Limitar la valoración máxima a 10
+                        respuesta2[jugador]["Valoración"] = min(10, valoracion_jugador)  
 
                     print("Entrenamiento completado.")
                     print("Valoración de los jugadores después del entrenamiento:")
@@ -589,14 +607,55 @@ def menu_entrenamiento(respuesta2, entrenado):
                         print("Valoración:", atributos["Valoración"])
                         print("---------------------")
                     entrenado = True
-
-        elif entrenamiento == 2:
+        elif entrenamiento == 2 :
+            print("Bienvenido a la información general acerca del menú de entrenamientos.")
+            print("En este menú tendrás la oportunidad de entrenar a tus jugadores y llevarlos al 100% para tu próximo partido.")
+            print("Recuerda que solamente habrá 1 entrenamiento por partido, por lo que mi recomendación es que siempre aproveches las oportunidades para entrenar.")
+            print("También ten en cuenta que los entrenamientos son solo para 4 jugadores a la vez, y a medida que la edad aumenta, la valoración del jugador no mejorará tanto, llegando al punto en que al cumplir los 30 años dejará de aumentar su media.")
+        elif entrenamiento == 3 :
             salir_menu1 = True
 
         else:
             print("¡Opción inválida! Intente nuevamente.")
     
     return entrenado
+def vitrina(equipo_nombre):
+    equipos20 = {
+        "boca juniors": vitrina_boca,
+        "river plate": vitrina_river,
+        "racing club": vitrina_racing,
+        "independiente": vitrina_independiente,
+        "vélez sarsfield": vitrina_velez,
+        "san lorenzo": vitrina_sanlorenzo,
+        "huracán": vitrina_huracan,
+        "central córdoba": vitrina_central_cordoba,
+        "belgrano": vitrina_belgrano,
+        "platense": vitrina_platense,
+        "barracas central": vitrina_barracas_central,
+        "godoy cruz": vitrina_godoy_cruz,
+        "banfield": vitrina_banfield,
+        "gimnasia": vitrina_gimnasia,
+        "atlético tucumán": vitrina_atletico_tucuman,
+        "sarmiento": vitrina_sarmiento,
+        "tigre": vitrina_tigre,
+        "colón": vitrina_colon,
+        "lanús": vitrina_lanus,
+        "talleres": vitrina_talleres,
+        "arsenal": vitrina_arsenal,
+        "unión": vitrina_union,
+        "newells": vitrina_newells,
+        "rosario central": vitrina_rosario_central,
+        "instituto": vitrina_instituto,
+        "defensa y justicia": vitrina_defensa_y_justicia,
+        "estudiantes": vitrina_estudiantes,
+    }
+
+    equipo_nombre_lower = equipo_nombre.lower()
+    
+    if equipo_nombre_lower in equipos20:
+        print(equipos20[equipo_nombre_lower]())
+    else:
+        print("Equipo no encontrado en la lista.")
 
 entrenado = False 
 jugar_partido=False
@@ -647,6 +706,8 @@ while True:
                             equipo_local, equipo_visitante = partido
                             print(f"{equipo_local} vs. {equipo_visitante}")
                         print()
+                elif respuesta3 == 7:
+                    vitrina(equipo_nombre=respuesta2)
                 elif respuesta3 == 8:
                     break
                     
