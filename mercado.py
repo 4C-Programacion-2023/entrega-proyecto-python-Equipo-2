@@ -3,8 +3,365 @@ import random
 import random as rd
 from collections import Counter
 import os
-from vitrina import *
-#En un futuro terminar la parte de eleccion de jugadores en formacion.
+#En un futuro terminar la parte de eleccion de jugadores en formacion.Terminar bien jugar partidos!!!!!!!
+def vitrina_atletico_tucuman():
+    return """
+PALMARES DE ATLÉTICO TUCUMÁN:
+
+Torneos Nacionales (0)
+    - No ha ganado ligas nacionales.
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_sarmiento():
+    return """
+PALMARES DE SARMIENTO:
+
+Torneos Nacionales (0)
+    - No ha ganado ligas nacionales.
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_banfield():
+    return """
+PALMARES DE BANFIELD:
+
+Torneos Nacionales (1)
+    - 1 Primera División
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_godoy_cruz():
+    return """
+PALMARES DE GODOY CRUZ:
+
+Torneos Nacionales (0)
+    - No ha ganado ligas nacionales.
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_boca(): 
+    return """
+PALMARES DE BOCA JUNIORS:
+Torneos nacionales (52)
+
+    -29 ligas profesionales
+    -6 ligas amateurs
+    -2 Copa Competencia Jockey Club
+    -5 Copa Carlos Ibarguren
+    -1 Copa Estímulo
+    -1 Copa Competencia “George VI”
+    -4 Copa Argentina
+    -2 Supercopa Argentina
+    -1 Copa Diego Maradona
+    -1 Copa de la Liga 
+    
+    
+Certámenes internacionales (22)
+
+    -6 Copa Libertadores
+    -3 Copa Intercontinental
+    -2 Copa Sudamericana
+    -1 Supercopa
+    -4 Recopa Sudamericana
+    -2 Copa Confraternidad
+    -1 Tie Cup Competition
+    -1 Copa de Honor Cousenier
+    -1 Master
+    -1 Copa de Oro Nicolás Leoz"""
+def vitrina_river(): 
+    return """
+PALMARES DE RIVER PLATE:
+Torneos Nacionales (54)
+
+    -36 Torneos Nacionales
+    -6 Copa de Competencia Jockey Club
+    -3 Copa Ibarguren
+    -1 Copa Adrián C. Escobar
+    -4 Copa Carlos Ibarguren
+    -3 Copa Argentina
+    -1 Supercopa Argentina
+
+Copas Internacionales  (15)
+
+    -4 Copa Libertadores.
+    -3 Copa Intercontinental.
+    -1 Supercopa Sudamericana.
+    -2 Copa Sudamericana.
+    -4 Recopa Sudamericana.
+    -1 Copa Suruga Bank. """
+def vitrina_sanlorenzo(): 
+    return """ 
+PALMARES DEL CLUB ATLETICO SAN LORENZO DE ALMAGRO:
+Torneos Nacionales (19)
+
+    -15 títulos de Primera División.
+    -1 título de Copa Campeonato.
+    -1 título de Supercopa Argentina.
+    -2 títulos de Copa Competencia.
+    -3 títulos de Copa de Honor.
+    -1 título de Copa de la República.
+    -1 título de Copa Río de la Plata.
+
+Copas Intrenacionales (5)
+
+    -1 título de Copa Libertadores.
+    -1 título de Copa Sudamericana.
+    -1 título de Recopa Sudamericana.
+    -1 título de Copa Mercosur.
+    -2 títulos de Copa Aldao."""
+def vitrina_racing(): 
+    return """ 
+PALMARES DE RACING CLUB DE AVELLANEDA:
+Torneos Nacionales (27)
+
+    -18 Ligas Argentina
+    -6 Copas Competencia
+    -1 Copa de honor
+Copas Internacionales (4)
+
+    -1 Copa Libertadores
+    -1 Copa Intercontinental
+    -1 Supercopa Sudamericana
+    -1 Copa Sudamericana"""
+def vitrina_independiente():
+    return """
+PALMARES DE INDEPENDIENTE:
+
+Torneos Nacionales (23)
+    -14 Ligas Argentina
+    -9 Copas Nacionales
+
+Copas Internacionales (19)
+
+    -7 Copas Libertadores
+    -2 Copas Intercontinentales
+    -3 Copas Interamericanas
+    -1 Supercopa Sudamericana
+    -2 Copas Sudamericanas
+    -1 Recopa Sudamericana"""
+def vitrina_velez(): 
+    return """
+PALMARES VELEZ SARFIELD:
+Torneos Nacionales (10)
+
+    -10 Ligas Argentinas
+
+Títulos Internacionales (4):
+
+    1 Copa Libertadores
+    1 Copa Intercontinental
+    1 Supercopa Sudamericana
+    1 Recopa Sudamericana
+ """
+def vitrina_estudiantes(): 
+    return """ 
+PALMARES DE ESTUDIANTES DE LA PLATA:
+
+Torneos Nacionales (7)
+
+    -6 Ligas Argentina
+    -1 Copa Argentina
+
+Copas Internacionales (10)
+
+    -4 Copas Libertadores
+    -1 Copa Intercontinental
+    -3 Copas Interamericanas
+    -1 Supercopa Sudamericana
+    -1 Recopa Sudamericana
+"""
+def vitrina_huracan(): 
+    return """ 
+PALMARES DE HURACAN:
+
+Torneos Nacionales (6)
+    -5 Ligas Argentina
+    -1 Copa Argentina
+
+"""
+def vitrina_atletico_tucuman():
+    return """
+PALMARES DE ATLÉTICO TUCUMÁN:
+
+Torneos Nacionales (0)
+    - No ha ganado ligas nacionales.
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_lanus():
+    return """
+PALMARES DE LANÚS:
+
+Torneos Nacionales (2)
+    - 1 Torneo de Primera División
+    - 1 Copa del Bicentenario
+
+Copas Internacionales (2)
+    - 1 Copa Conmebol Sudamericana
+    - 1 Copa Suruga Bank
+"""
+def vitrina_colon():
+    return """
+PALMARES DE COLÓN:
+
+Torneos Nacionales (0)
+    - No ha ganado ligas nacionales.
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_tigre():
+    return """
+PALMARES DE TIGRE:
+
+Torneos Nacionales (2)
+    - 2 Copas de la Liga Profesional
+
+Copas Internacionales (1)
+    - 1 Copa de la Superliga Argentina
+"""
+def vitrina_sarmiento():
+    return """
+PALMARES DE SARMIENTO:
+
+Torneos Nacionales (0)
+    - No ha ganado ligas nacionales.
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_gimnasia():
+    return """
+PALMARES DE GIMNASIA:
+
+Torneos Nacionales (1)
+    - 1 Campeonato de Primera División
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_belgrano():
+    return """
+PALMARES DE BELGRANO:
+
+Torneos Nacionales (0)
+    - No ha ganado ligas nacionales.
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_talleres():
+    return """
+PALMARES DE TALLERES:
+
+Torneos Nacionales (1)
+    - 1 Torneo Nacional
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_arsenal():
+    return """
+PALMARES DE ARSENAL:
+
+Torneos Nacionales (2)
+    - 1 Torneo Clausura
+    - 1 Copa Argentina
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_rosario_central():
+    return """
+PALMARES DE ROSARIO CENTRAL:
+
+Torneos Nacionales (3)
+    - 1 Torneo Nacional
+    - 1 Torneo Argentino A
+    - 1 Primera B Nacional
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_union():
+    return """
+PALMARES DE UNIÓN:
+
+Torneos Nacionales (0)
+    - No ha ganado ligas nacionales.
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_defensa_y_justicia():
+    return """
+PALMARES DE DEFENSA Y JUSTICIA:
+
+Torneos Nacionales (2)
+    - 1 Liga Profesional de Fútbol
+    - 1 Copa Sudamericana
+
+Copas Internacionales (1)
+    - 1 Recopa Sudamericana
+"""
+def vitrina_instituto():
+    return """
+PALMARES DE INSTITUTO:
+
+Torneos Nacionales (1)
+    - 1 Primera B Nacional
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_barracas_central():
+    return """
+PALMARES DE BARRACAS CENTRAL:
+
+Torneos Nacionales (0)
+    - No ha ganado ligas nacionales.
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_platense():
+    return """
+PALMARES DE PLATENSE:
+
+Torneos Nacionales (0)
+    - No ha ganado ligas nacionales.
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_central_cordoba():
+    return """
+PALMARES DE CENTRAL CÓRDOBA:
+
+Torneos Nacionales (3)
+    - 1 Primera B Nacional
+    - 1 Torneo Argentino A
+    - 1 Torneo Federal A
+
+Copas Internacionales (0)
+    - No ha ganado copas internacionales.
+"""
+def vitrina_newells():
+    return """
+PALMARES DE NEWELL'S OLD BOYS:
+
+Torneos Nacionales (6)
+    - 6 Torneos de Primera División
+
+Copas Internacionales (1)
+    - 1 Copa Libertadores
+"""
 presupuesto_equipos = {
     "boca juniors": 23000000,
     "river plate": 25000000,
@@ -386,13 +743,17 @@ def jugar_partidos(respuesta2, equipos20):
             for jugador, goles in counter_goleadores.most_common(10):
                 print(f"{jugador}: {goles} goles")
         elif respuesta == 4:
-            print("-----Tabla de Posiciones-----")
-            print(f"Liga Profesional de Futbol Argentino")
-            print(f"Fechas Jugadas: {fecha_actual}/{len(fechas)}\n")
-            print(f"{'Equipo':<20}{'Puntos':<10}{'GF':<10}{'GC':<10}{'Partidos Jugados':<20}")
-            print("-" * 50)
-            for equipo, datos in tabla_ordenada.items():
-                print(f"{equipo:<20}{datos['Puntos']:<10}{datos['GF']:<10}{datos['GC']:<10}{datos['Partidos Jugados']:<20}")
+                print("Tabla de Posiciones:")
+                print("-" * 65)
+                print(f"{'Equipo':<20}{'Puntos':<10}{'GF':<10}{'GC':<10}{'Partidos Jugados':<15}")
+                print("-" * 65)
+                for equipo, datos in tabla_ordenada:
+                    puntos = datos['Puntos']
+                    goles_favor = datos['GF']
+                    goles_contra = datos['GC']
+                    partidos_jugados = datos['Partidos Jugados']
+                    print(f"{equipo:<20}{puntos:<10}{goles_favor:<10}{goles_contra:<10}{partidos_jugados:<15}")
+                print("-" * 65)
         elif respuesta == 5:
             return
         else:
@@ -620,7 +981,7 @@ def menu_entrenamiento(respuesta2, entrenado):
     
     return entrenado
 def vitrina(equipo_nombre):
-    equipos20 = {
+    equipos201 = {
         "boca juniors": vitrina_boca,
         "river plate": vitrina_river,
         "racing club": vitrina_racing,
@@ -652,8 +1013,8 @@ def vitrina(equipo_nombre):
 
     equipo_nombre_lower = equipo_nombre.lower()
     
-    if equipo_nombre_lower in equipos20:
-        print(equipos20[equipo_nombre_lower]())
+    if equipo_nombre_lower in equipos201:
+        print(equipos201[equipo_nombre_lower]())
     else:
         print("Equipo no encontrado en la lista.")
 
