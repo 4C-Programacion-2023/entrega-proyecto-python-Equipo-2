@@ -639,6 +639,7 @@ def jugar_partidos(respuesta2, equipos20):
                 if eleccion_porteros in porteros:
                     porteros1.append(eleccion_porteros)
                     valoracion_final_equipo += valoracion_jugador
+                    porteros.remove(eleccion_porteros)
                 else:
                      print("¡Jugador no válido! Intente nuevamente.")
             print(defensores)
@@ -649,6 +650,7 @@ def jugar_partidos(respuesta2, equipos20):
                 eleccion_defensores = input("Elija un jugador para colocar como defensor (ingrese el nombre): ")
                 if eleccion_defensores in defensores:
                     defensores1.append(eleccion_defensores)
+                    defensores.remove(eleccion_defensores)
                 else:
                     print("¡Jugador no válido! Intente nuevamente.")
             print(volantes)
@@ -661,6 +663,7 @@ def jugar_partidos(respuesta2, equipos20):
                 if eleccion_volantes in volantes:
                     volantes1.append(eleccion_volantes)
                     valoracion_final_equipo+=valoracion_jugador2
+                    volantes.remove(eleccion_volantes)
                 else:
                      print("¡Jugador no válido! Intente nuevamente.")
             print(delanteros)
@@ -673,6 +676,7 @@ def jugar_partidos(respuesta2, equipos20):
                 if eleccion_Delanteros in delanteros:
                     delanteros1.append(eleccion_Delanteros)
                     valoracion_final_equipo+=valoracion_jugador3
+                    delanteros.remove(eleccion_Delanteros)
                 else:
                      print("¡Jugador no válido! Intente nuevamente.")
             print("Formacion: 4-3-3")
