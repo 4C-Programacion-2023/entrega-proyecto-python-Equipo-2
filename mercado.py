@@ -3,6 +3,7 @@ import random
 import random as rd
 from collections import Counter
 import os
+import json
 #En un futuro terminar la parte de eleccion de jugadores en formacion.Terminar bien jugar partidos!!!!!!!
 def vitrina_atletico_tucuman():
     return """
@@ -592,13 +593,41 @@ def simular_partido(equipo_local, equipo_visitante, equipos20):
 fixture = armar_fixture(equipos)
 fechas = fixture
 fecha_actual = 0
-tabla_posiciones = {equipo: {'Puntos': 0, 'GF': 0, 'GC': 0} for equipo in equipos}
+tabla_posiciones = {equipo: {'Puntos': 0, 'GF': 0, 'GC': 0, 'Partidos Jugados': 0} for equipo in equipos}
+equipos = [equipo.lower() for equipo in equipos20]
+
 resultados_fecha = []
 goleadores = []
-
+def guardar_datos():
+    datos = {
+        'fecha_actual': fecha_actual,
+        'tabla_posiciones': tabla_posiciones,
+        'resultados_fecha': resultados_fecha,
+        'goleadores': goleadores
+    }
+    with open('datos.json', 'w') as archivo:
+        json.dump(datos, archivo)
+def cargar_datos():
+    global fecha_actual
+    global tabla_posiciones
+    global resultados_fecha
+    global goleadores
+    try:
+        with open('datos.json', 'r') as archivo:
+            datos = json.load(archivo)
+            fecha_actual = datos['fecha_actual']
+            tabla_posiciones = datos['tabla_posiciones']
+            resultados_fecha = datos['resultados_fecha']
+            goleadores = datos['goleadores']
+    except FileNotFoundError:
+        pass
 def jugar_partidos(respuesta2, equipos20):
     clear_screen()
     global fecha_actual 
+    global goleadores
+    global tabla_posiciones
+    global resultados_fecha
+    global fixture
     respuesta2 = respuesta2.lower()
     salir_menu1 = False
     formacion_armada = False
@@ -747,6 +776,17 @@ def jugar_partidos(respuesta2, equipos20):
             for jugador, goles in counter_goleadores.most_common(10):
                 print(f"{jugador}: {goles} goles")
         elif respuesta == 4:
+            if len(resultados_fecha) == 0:  
+                print("Tabla de Posiciones:")
+                print("-" * 65)
+                print(f"{'Equipo':<20}{'Puntos':<10}{'GF':<10}{'GC':<10}{'Partidos Jugados':<15}")
+                print("-" * 65)
+                equipos_ordenados = sorted(equipos)
+                for equipo in equipos_ordenados:
+                    print(f"{equipo:<20}{'0':<10}{'0':<10}{'0':<10}{'0':<15}")
+                print("-" * 65)
+            else:
+                tabla_ordenada = sorted(tabla_posiciones.items(), key=lambda x: (x[1]['Puntos'], x[1]['GF']), reverse=True)
                 print("Tabla de Posiciones:")
                 print("-" * 65)
                 print(f"{'Equipo':<20}{'Puntos':<10}{'GF':<10}{'GC':<10}{'Partidos Jugados':<15}")
@@ -761,7 +801,7 @@ def jugar_partidos(respuesta2, equipos20):
         elif respuesta == 5:
             return
         else:
-            print("*****Valor incorrecto.Ingrese valor valido.*****")
+            print("**Valor incorrecto.Ingrese valor valido.**")
 
                 
 def comprar_jugador(respuesta2, presupuesto_equipos, equipos20):
@@ -783,7 +823,7 @@ def comprar_jugador(respuesta2, presupuesto_equipos, equipos20):
         elif respuesta4 == 2:
             print("Equipos disponibles:")
             for equipo in equipos20:
-                print(f"*{equipo.title()}*")
+                print(f"{equipo.title()}")
 
             while True:
                 respuesta5 = input("--Ingrese el equipo del cual desea conocer sus jugadores: ").lower()
@@ -796,12 +836,12 @@ def comprar_jugador(respuesta2, presupuesto_equipos, equipos20):
                         print("--------------------")
                     break
                 else:
-                    print("*****Equipo inexistente. Ingrese un equipo válido.*****")
+                    print("**Equipo inexistente. Ingrese un equipo válido.**")
 
         elif respuesta4 == 3:
             print("Equipos disponibles:")
             for equipo in equipos20:
-                print(f"*{equipo.title()}*")
+                print(f"{equipo.title()}")
 
             while True:
                 respuesta6 = input("--Ingrese el equipo al cual desea comprar un jugador: ").lower()
@@ -809,7 +849,7 @@ def comprar_jugador(respuesta2, presupuesto_equipos, equipos20):
                     equipo_elegido2 = equipos20[respuesta6]
                     print("Jugadores disponibles en", respuesta6.title(), ":")
                     for jugador, atributos in equipo_elegido2.items():
-                        print(f"*{jugador.title()}*")
+                        print(f"{jugador.title()}")
 
                     while True:
                         jugador_a_comprar = input("--Ingrese el jugador que desea comprar: ").title()
@@ -836,14 +876,14 @@ def comprar_jugador(respuesta2, presupuesto_equipos, equipos20):
                                 elif seguridad1 == "n":
                                     print("No se realizará la compra del jugador.")
                                 else:
-                                    print("*****Opción inválida. Ingrese 's' o 'n'.*****")
+                                    print("**Opción inválida. Ingrese 's' o 'n'.**")
                             else:
-                                print("*****El precio del jugador supera el del presupuesto. Fondos insuficientes.*****")
+                                print("**El precio del jugador supera el del presupuesto. Fondos insuficientes.**")
                                 return
                         else:
-                            print("*****Jugador no existente en ese plantel. Ingrese un jugador válido.*****")
+                            print("**Jugador no existente en ese plantel. Ingrese un jugador válido.**")
                 else:
-                    print("*****Equipo inexistente. Ingrese un equipo válido.*****")
+                    print("**Equipo inexistente. Ingrese un equipo válido.**")
         elif respuesta4 == 4:
             print("¡Bienvenido al menú de compra de jugadores!")
             print("En esta sección, podrás adquirir jugadores de otros equipos para reforzar tu plantilla.")
@@ -856,7 +896,7 @@ def comprar_jugador(respuesta2, presupuesto_equipos, equipos20):
             return
 
         else:
-            print("*****Opción incorrecta. Ingrese una opción válida.*****")
+            print("**Opción incorrecta. Ingrese una opción válida.**")
 def vender_jugadores(respuesta2, presupuesto_equipos, equipos20):
     clear_screen()
     mostrar_plantel(respuesta2.lower(), presupuesto_equipos)
@@ -1024,6 +1064,7 @@ def vitrina(equipo_nombre):
 
 entrenado = False 
 jugar_partido=False
+cargar_datos()
 while True:
     print("-----LPF - Manager-----")
     print("1. Información del juego")
@@ -1034,7 +1075,7 @@ while True:
     if respuesta1 == 2:
         print("Equipos disponibles:")
         for equipo in equipos20:
-            print(f"*{equipo.title()}*")
+            print(f"{equipo.title()}")
 
         respuesta2 = input("--Ingrese su opción: ").lower()
         if respuesta2 in equipos20:
@@ -1078,10 +1119,10 @@ while True:
                     
 
                 else:
-                    print("*****Valor incorrecto. Ingrese un valor correcto.*****")
+                    print("**Valor incorrecto. Ingrese un valor correcto.**")
 
         else:
-            print("*****Valor incorrecto. Ingrese un valor correcto.*****")
+            print("**Valor incorrecto. Ingrese un valor correcto.**")
 
     elif respuesta1 == 1:
         print("")
@@ -1091,4 +1132,5 @@ while True:
         print("")
 
     else:
-        print("*****Valor incorrecto. Ingrese un valor correcto.*****")
+        print("**Valor incorrecto. Ingrese un valor correcto.**")
+    guardar_datos()
